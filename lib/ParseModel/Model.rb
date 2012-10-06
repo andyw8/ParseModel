@@ -10,7 +10,7 @@ module ParseModel
         @PFObject = PFObject.objectWithClassName(self.class.to_s)
         if arg.is_a?(Hash) then
           arg.each do |k,v|
-            v ||= NSNull # Can't use nil for values on PFObject
+            v ||= NSNull.null # Can't use nil for values on PFObject
             @PFObject.setObject(v, forKey:k) if fields.include?(k)
           end
         end
@@ -22,7 +22,7 @@ module ParseModel
         @PFObject.objectForKey(method)
       elsif fields.map {|f| "#{f}="}.include?("#{method}")
         method = method.split("=")[0]
-        value = args.first || NSNull # Can't use nil for values on PFObject
+        value = args.first || NSNull.null # Can't use nil for values on PFObject
         @PFObject.setObject(value, forKey:method)
       elsif @PFObject.respond_to?(method)
         @PFObject.send(method, *args, &block)
